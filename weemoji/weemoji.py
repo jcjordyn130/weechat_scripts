@@ -26,7 +26,7 @@ except ImportError:
 
 import emoji
 
-SCRIPT_NAME     = "emoji"
+SCRIPT_NAME     = "weemoji"
 SCRIPT_AUTHOR   = "jcjordyn120 <onlinecloud1@gmail.com>"
 SCRIPT_VERSION  = "1"
 SCRIPT_LICENSE  = "GPL3"
