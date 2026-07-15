@@ -939,7 +939,7 @@ sub highmon_print
 		if (weechat::config_get_plugin("custom_time_format") eq "") {
 			$timestr = weechat::config_string(weechat::config_get("weechat.look.buffer_time_format"));
 		} else {
-			$timestr = weechat::config_string(weechat::config_get_plugin("custom_time_format"));
+			$timestr = weechat::config_get_plugin("custom_time_format");
 		}
 
 		# Add time string
