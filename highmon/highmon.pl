@@ -785,7 +785,7 @@ sub highmon_new_message
 						$nick = weechat::color("chat_highlight").$uncolnick.weechat::color("reset");
 					}
 					# Send to output
-					highmon_print ($cb_msg, $cb_bufferp, $nick, $cb_date, $cb_tags, $uncolnick);
+					highmon_print ($cb_msg, $cb_bufferp, $nick, $cb_date, $cb_tags);
 				}
 			}
 			# Or is private message
@@ -796,7 +796,7 @@ sub highmon_new_message
 				# Format nick
 				$nick = " ".weechat::config_get_plugin("nick_prefix").weechat::color("chat_highlight").$uncolnick.weechat::color("reset").weechat::config_get_plugin("nick_suffix");
 				#Send to output
-				highmon_print ($cb_msg, $cb_bufferp, $nick, $cb_date, $cb_tags, $uncolnick);
+				highmon_print ($cb_msg, $cb_bufferp, $nick, $cb_date, $cb_tags);
 			}
 		}
 	}
@@ -811,14 +811,19 @@ sub highmon_print
 	my $nick = $_[2] if ($_[2]);
 	my $cb_date = $_[3] if ($_[3]);
 	my $cb_tags = $_[4] if ($_[4]);
-	my $raw_nick = $_[5] if ($_[5]);
 
 	# Process ignores
 	if (weechat::config_get_plugin("ignore_nicks") ne "") {
 		my @ignore_nicks = split(/\s*,\s*/, weechat::config_get_plugin("ignore_nicks"));
 
-		# Check the raw_nick against the ignore array (case-insensitive)
-		if ($raw_nick && grep { lc($_) eq lc($raw_nick) } @ignore_nicks) {
+		# The absolute safest way to get the true nickname is from WeeChat's message tags
+		my $true_nick = "";
+		if ($cb_tags && $cb_tags =~ /nick_([^,]+)/) {
+			$true_nick = $1;
+		}
+		
+		# Check the true_nick against the ignore array (case-insensitive)
+		if ($true_nick && grep { lc($_) eq lc($true_nick) } @ignore_nicks) {
 			return;
 		}
 	}
